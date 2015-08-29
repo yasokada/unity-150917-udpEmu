@@ -20,13 +20,13 @@ public class UdpEchoServer : MonoBehaviour {
 	void Start () {
 		init ();
 	}
+
+	void Update() {
+		recvdText.text = lastRcvd;
+	}
 	
 	void OnGUI() {
-		recvdText.text = lastRcvd;
 
-		Rect rectObj=new Rect(40,10,200,100);
-		GUI.Box (rectObj, "rcvd: \n" + lastRcvd);
-		
 		if (GUI.Button (new Rect (10, 250, 100, 40), "Quit")) {
 			Application.Quit ();
 		} 
