@@ -34,7 +34,8 @@ public class UdpEchoServer : MonoBehaviour {
 		if (txt.Length == 0) {
 			return 0;
 		}
-		int res = int.Parse (delayIF.text); 
+		// instead of int.Parse(), Convert.XXX() will return 0 if null
+		int res = Convert.ToInt16(delayIF.text);
 		return res;
 	}
 
