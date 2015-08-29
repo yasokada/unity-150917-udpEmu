@@ -60,9 +60,20 @@ public class UdpEchoServer : MonoBehaviour {
 		myipText.text = getMyIPAddress () + " (" + port.ToString () + ")";
 		startTread ();
 	}
-	
+
+	string getTextMessage(string rcvd)
+	{
+		if (rcvd.Length == 0) {
+			return "";
+		}
+		string msg = 
+			"rx: " + rcvd + System.Environment.NewLine
+			+ "tx: " + rcvd;
+		return msg;
+	}
+
 	void Update() {
-		recvdText.text = lastRcvd;
+		recvdText.text = getTextMessage (lastRcvd);
 		delay_msec = getDelay ();
 	}
 	
