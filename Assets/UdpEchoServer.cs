@@ -14,11 +14,31 @@ public class UdpEchoServer : MonoBehaviour {
 	public int port = 6000;
 	
 	public string lastRcvd;
-	private bool stopThr = false;
+
 	public Text recvdText;
-	
+	public Text myipText; // to show my IP address
+
+	private bool stopThr = false;
+
+	string getMyIPAddress()
+	{
+		string hostname = Dns.GetHostName ();
+		IPAddress[] adrList = Dns.GetHostAddresses (hostname);
+		foreach (IPAddress adr in adrList) {
+			string ipadr = adr.ToString();
+			if (ipadr.Contains("192.")) {
+				return adr.ToString();
+			}
+			if (ipadr.Contains("172.") && ipadr.Contains(".20.")) {
+				return adr.ToString();
+			}
+		}
+		return "IPadr: not found";
+	}
+
 	void Start () {
 		init ();
+		myipText.text = getMyIPAddress ();
 	}
 
 	void Update() {
@@ -26,7 +46,6 @@ public class UdpEchoServer : MonoBehaviour {
 	}
 	
 	void OnGUI() {
-
 		if (GUI.Button (new Rect (10, 250, 100, 40), "Quit")) {
 			Application.Quit ();
 		} 
@@ -47,7 +66,7 @@ public class UdpEchoServer : MonoBehaviour {
 	{
 		client = new UdpClient (port);
 		client.Client.ReceiveTimeout = 300; // msec
-		client.Client.Blocking = false; //<---------------------------------
+		client.Client.Blocking = false;
 		while (stopThr == false) {
 			try {
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
