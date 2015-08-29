@@ -59,7 +59,7 @@ public class UdpEchoServer : MonoBehaviour {
 	void Start () {
 		myipText.text = getMyIPAddress ();
 		portText.text = port.ToString ();
-		init ();
+		startTread ();
 	}
 	
 	void Update() {
@@ -67,7 +67,7 @@ public class UdpEchoServer : MonoBehaviour {
 		delay_msec = getDelay ();
 	}
 	
-	void init() {
+	void startTread() {
 		Debug.Log ("init");
 		rcvThr = new Thread( new ThreadStart(FuncRcvData));
 		rcvThr.Start ();
