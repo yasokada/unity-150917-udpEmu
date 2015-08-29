@@ -15,8 +15,9 @@ public class UdpEchoServer : MonoBehaviour {
 	
 	public string lastRcvd;
 
-	public Text recvdText;
 	public Text myipText; // to show my IP address
+	public Text portText; // to show UDP port
+	public Text recvdText;
 
 	private bool stopThr = false;
 
@@ -39,12 +40,13 @@ public class UdpEchoServer : MonoBehaviour {
 	void Start () {
 		init ();
 		myipText.text = getMyIPAddress ();
+		portText.text = port.ToString ();
 	}
 
 	void Update() {
 		recvdText.text = lastRcvd;
 	}
-	
+
 	void OnGUI() {
 		if (GUI.Button (new Rect (10, 250, 100, 40), "Quit")) {
 			Application.Quit ();
