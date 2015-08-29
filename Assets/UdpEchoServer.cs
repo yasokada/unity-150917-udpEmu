@@ -8,6 +8,13 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
+/*
+ * v0.1 2015/08/29
+ *   following features have been implemented.
+ *   - delay before echo back
+ *   - echo back
+ */
+
 public class UdpEchoServer : MonoBehaviour {
 	Thread rcvThr;
 	UdpClient client;
@@ -42,7 +49,7 @@ public class UdpEchoServer : MonoBehaviour {
 			if (ipadr.Contains("192.")) {
 				return adr.ToString();
 			}
-			if (ipadr.Contains("172.") && ipadr.Contains(".20.")) {
+			if (ipadr.Contains("172.20")) {
 				return adr.ToString();
 			}
 		}
