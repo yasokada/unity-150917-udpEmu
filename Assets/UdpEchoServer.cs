@@ -25,6 +25,7 @@ public class UdpEchoServer : MonoBehaviour {
 	{
 		string hostname = Dns.GetHostName ();
 		IPAddress[] adrList = Dns.GetHostAddresses (hostname);
+
 		foreach (IPAddress adr in adrList) {
 			string ipadr = adr.ToString();
 			if (ipadr.Contains("192.")) {
@@ -38,9 +39,9 @@ public class UdpEchoServer : MonoBehaviour {
 	}
 
 	void Start () {
-		init ();
-//		myipText.text = getMyIPAddress ();
+		myipText.text = getMyIPAddress ();
 		portText.text = port.ToString ();
+		init ();
 	}
 
 	void Update() {
@@ -84,6 +85,9 @@ public class UdpEchoServer : MonoBehaviour {
 			{
 				//              print(err.ToString());
 			}
+
+			// without this sleep, on adnroid, the app will not start (freeze at Unity splash)
+			Thread.Sleep(20); // 200
 		}
 	}
 }
