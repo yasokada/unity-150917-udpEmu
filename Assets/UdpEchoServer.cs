@@ -48,11 +48,11 @@ public class UdpEchoServer : MonoBehaviour {
 		recvdText.text = lastRcvd;
 	}
 
-	void OnGUI() {
-		if (GUI.Button (new Rect (10, 250, 100, 40), "Quit")) {
-			Application.Quit ();
-		} 
-	}
+//	void OnGUI() {
+//		if (GUI.Button (new Rect (10, 250, 100, 40), "Quit")) {
+//			Application.Quit ();
+//		} 
+//	}
 	
 	void init() {
 		Debug.Log ("init");
