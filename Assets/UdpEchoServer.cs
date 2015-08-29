@@ -9,6 +9,10 @@ using System.Net.Sockets;
 using System.Threading;
 
 /*
+ * v0.2 2015/08/29
+ *   - fix for negative value for delay_msec
+ *   - fix for string to int
+ *   - fix for android (splash freeze)
  * v0.1 2015/08/29
  *   following features have been implemented.
  *   - delay before echo back
