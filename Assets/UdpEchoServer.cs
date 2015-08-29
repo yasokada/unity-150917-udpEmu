@@ -18,8 +18,19 @@ public class UdpEchoServer : MonoBehaviour {
 	public Text myipText; // to show my IP address
 	public Text portText; // to show UDP port
 	public Text recvdText;
+	public InputField delayIF; // to input delay before echo back
 
 	private bool stopThr = false;
+	private int delay_msec = 0;
+
+	int getDelay() { 
+		string txt = delayIF.text;
+		if (txt.Length == 0) {
+			return 0;
+		}
+		int res = int.Parse (delayIF.text); 
+		return res;
+	}
 
 	string getMyIPAddress()
 	{
@@ -43,16 +54,11 @@ public class UdpEchoServer : MonoBehaviour {
 		portText.text = port.ToString ();
 		init ();
 	}
-
+	
 	void Update() {
 		recvdText.text = lastRcvd;
+		delay_msec = getDelay ();
 	}
-
-//	void OnGUI() {
-//		if (GUI.Button (new Rect (10, 250, 100, 40), "Quit")) {
-//			Application.Quit ();
-//		} 
-//	}
 	
 	void init() {
 		Debug.Log ("init");
@@ -78,6 +84,7 @@ public class UdpEchoServer : MonoBehaviour {
 				lastRcvd = text;
 
 				if (lastRcvd.Length > 0) {
+					Thread.Sleep(delay_msec);
 					client.Send(data, data.Length, anyIP); // echo
 				}
 			}
