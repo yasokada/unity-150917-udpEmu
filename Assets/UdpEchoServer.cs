@@ -22,8 +22,7 @@ public class UdpEchoServer : MonoBehaviour {
 	
 	public string lastRcvd;
 
-	public Text myipText; // to show my IP address
-	public Text portText; // to show UDP port
+	public Text myipText; // to show my IP address(port)
 	public Text recvdText;
 	public InputField delayIF; // to input delay before echo back
 
@@ -57,8 +56,7 @@ public class UdpEchoServer : MonoBehaviour {
 	}
 
 	void Start () {
-		myipText.text = getMyIPAddress ();
-		portText.text = port.ToString ();
+		myipText.text = getMyIPAddress () + " (" + port.ToString () + ")";
 		startTread ();
 	}
 	
