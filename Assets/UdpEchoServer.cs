@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI; // for Text
 
 using System;
 using System.Text;
@@ -14,12 +15,15 @@ public class UdpEchoServer : MonoBehaviour {
 	
 	public string lastRcvd;
 	private bool stopThr = false;
+	public Text recvdText;
 	
 	void Start () {
 		init ();
 	}
 	
 	void OnGUI() {
+		recvdText.text = lastRcvd;
+
 		Rect rectObj=new Rect(40,10,200,100);
 		GUI.Box (rectObj, "rcvd: \n" + lastRcvd);
 		
@@ -50,7 +54,7 @@ public class UdpEchoServer : MonoBehaviour {
 				byte[] data = client.Receive(ref anyIP);
 				string text = Encoding.ASCII.GetString(data);
 				lastRcvd = text;
-				
+
 				if (lastRcvd.Length > 0) {
 					client.Send(data, data.Length, anyIP); // echo
 				}
