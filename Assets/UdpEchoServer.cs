@@ -39,7 +39,7 @@ public class UdpEchoServer : MonoBehaviour {
 
 	void Start () {
 		init ();
-		myipText.text = getMyIPAddress ();
+//		myipText.text = getMyIPAddress ();
 		portText.text = port.ToString ();
 	}
 
