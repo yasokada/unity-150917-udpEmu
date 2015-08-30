@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Threading;
 
 /*
- * v0.4 2015/08/30
+ * v0.3 2015/08/30
  *   - correct .gitignore file
  * v0.2 2015/08/29
  *   - fix for negative value for delay_msec
