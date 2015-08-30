@@ -7,7 +7,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using MyNetUtil; // for CIPadr.getMyIPAddress()
+using NS_MyNetUtil; // for CIPadr.getMyIPAddress()
 
 /*
  * v0.4 2015/08/30
@@ -58,7 +58,7 @@ public class UdpEchoServer : MonoBehaviour {
 	
 	void Start () {
 		versionText.text = kAppName + " " + kVersion;
-		myipText.text = CIPadr.getMyIPAddress() + " (" + port.ToString () + ")";
+		myipText.text = MyNetUtil.getMyIPAddress() + " (" + port.ToString () + ")";
 		startTread ();
 	}
 

@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Net; // for Dns.XXX()
 
-namespace MyNetUtil
+namespace NS_MyNetUtil
 {
-	public static class CIPadr {
+	public static class MyNetUtil {
 		public static string getMyIPAddress()
 		{
 			string hostname = Dns.GetHostName ();
