@@ -10,6 +10,7 @@ using System.Threading;
 
 /*
  * v0.3 2015/08/30
+ *   - show version info
  *   - correct .gitignore file
  * v0.2 2015/08/29
  *   - fix for negative value for delay_msec
@@ -25,12 +26,16 @@ public class UdpEchoServer : MonoBehaviour {
 	Thread rcvThr;
 	UdpClient client;
 	public int port = 6000;
-	
+
+	public const string kAppName = "UDPEcho";
+	public const string kVersion = "v0.3";
+
 	public string lastRcvd;
 
 	public Text myipText; // to show my IP address(port)
 	public Text recvdText;
 	public InputField delayIF; // to input delay before echo back
+	public Text versionText;
 
 	private bool stopThr = false;
 	private int delay_msec = 0;
@@ -66,6 +71,7 @@ public class UdpEchoServer : MonoBehaviour {
 	}
 
 	void Start () {
+		versionText.text = kAppName + " " + kVersion;
 		myipText.text = getMyIPAddress () + " (" + port.ToString () + ")";
 		startTread ();
 	}
