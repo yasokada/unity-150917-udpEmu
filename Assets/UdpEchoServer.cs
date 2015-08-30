@@ -7,8 +7,11 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using MyNetUtil; // for CIPadr.getMyIPAddress()
 
 /*
+ * v0.4 2015/08/30
+ *   - separate IP address get method to MyNetUtil.cs
  * v0.3 2015/08/30
  *   - show version info
  *   - correct .gitignore file
@@ -28,7 +31,7 @@ public class UdpEchoServer : MonoBehaviour {
 	public int port = 6000;
 
 	public const string kAppName = "UDPEcho";
-	public const string kVersion = "v0.3";
+	public const string kVersion = "v0.4";
 
 	public string lastRcvd;
 
@@ -52,27 +55,10 @@ public class UdpEchoServer : MonoBehaviour {
 		}
 		return res;
 	}
-
-	string getMyIPAddress()
-	{
-		string hostname = Dns.GetHostName ();
-		IPAddress[] adrList = Dns.GetHostAddresses (hostname);
-
-		foreach (IPAddress adr in adrList) {
-			string ipadr = adr.ToString();
-			if (ipadr.Contains("192.")) {
-				return adr.ToString();
-			}
-			if (ipadr.Contains("172.20")) {
-				return adr.ToString();
-			}
-		}
-		return "IPadr: not found";
-	}
-
+	
 	void Start () {
 		versionText.text = kAppName + " " + kVersion;
-		myipText.text = getMyIPAddress () + " (" + port.ToString () + ")";
+		myipText.text = CIPadr.getMyIPAddress() + " (" + port.ToString () + ")";
 		startTread ();
 	}
 
