@@ -7,7 +7,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using NS_MyNetUtil; // for CIPadr.getMyIPAddress()
+using NS_MyNetUtil; // for MyNetUtil.getMyIPAddress()
 
 /*
  * v0.4 2015/08/30
