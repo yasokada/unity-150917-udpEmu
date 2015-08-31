@@ -114,6 +114,7 @@ public class UdpEchoServer : MonoBehaviour {
 			// without this sleep, on adnroid, the app will not start (freeze at Unity splash)
 			Thread.Sleep(20); // 200
 		}
+		client.Close ();
 	}
 }
 
