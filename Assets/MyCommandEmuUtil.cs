@@ -11,7 +11,7 @@ namespace NS_MyCommandEmuUtil
 		private static bool hasKey(string searchKey) {
 			List<string> resList;
 
-// KeyNotFoundException
+// KeyNotFoundException when searchKey is not registered
 //			resList = myDic[searchKey];
 
 			bool res;
@@ -45,7 +45,7 @@ namespace NS_MyCommandEmuUtil
 			myDic.Add(commandStr, responseList);
 		}
 
-		public static void displayAllElementWithKey(string searchKey) {
+		public static void DisplayAllElementWithKey(string searchKey) {
 			foreach(KeyValuePair<string, List<string>> pair in myDic) {
 				if (pair.Key != searchKey) {
 					continue;
@@ -57,13 +57,40 @@ namespace NS_MyCommandEmuUtil
 			}
 		}
 
+		public static bool FindRandomly(string searchKey, out string resStr) {
+			if (hasKey (searchKey) == false) {
+				resStr = ""; 
+				return false;
+			}
+			List<string> resList;
+			resList = myDic [searchKey];
+			int pos = Random.Range (0, resList.Count);
+			resStr = resList [pos];
+			return true;
+		}
+
 		public static void Test_main() {
 			Init ();
 			Add ("hello", "hello, Mike");
 			Add ("hello", "hello, Suzuki sann");
 			Add ("hello", "hello, Francheska");
-			displayAllElementWithKey ("hello");
+			Add ("sleep", "OK. sleeping");
+			Add ("time", "2015/09/18 06:20");
+			Add ("time", "2015/09/18 06:25");
+			Add ("time", "2015/09/18 06:30");
+//			DisplayAllElementWithKey ("hello");
 
+			bool isOk;
+			string resStr;
+			string keyStr;
+
+			keyStr = "time";
+			for (int loop=0; loop<10; loop++) {
+				isOk = FindRandomly(keyStr, out resStr);
+				if (isOk) {
+					Debug.Log(keyStr + " >> " + resStr);
+				}
+			}
 		}
 
 	}
