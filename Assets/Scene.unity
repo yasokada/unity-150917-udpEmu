@@ -851,7 +851,7 @@ GameObject:
   - 4: {fileID: 1725880441}
   - 114: {fileID: 1725880440}
   m_Layer: 0
-  m_Name: UDPEcho
+  m_Name: UDPEmulator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -954,6 +954,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10

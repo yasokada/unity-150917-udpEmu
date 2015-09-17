@@ -10,6 +10,8 @@ using System.Threading;
 using NS_MyNetUtil; // for MyNetUtil.getMyIPAddress()
 
 /*
+ * 
+ * ----------- UdpEchoServer ==> udpEmu ------------
  * v0.4 2015/08/30
  *   - separate IP address get method to MyNetUtil.cs
  * v0.3 2015/08/30
@@ -25,7 +27,7 @@ using NS_MyNetUtil; // for MyNetUtil.getMyIPAddress()
  *   - echo back
  */
 
-public class UdpEchoServer : MonoBehaviour {
+public class udpEmu : MonoBehaviour {
 	Thread rcvThr;
 	UdpClient client;
 	public int port = 6000;
