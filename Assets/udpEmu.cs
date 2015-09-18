@@ -97,7 +97,17 @@ public class udpEmu : MonoBehaviour {
 		stopThr = true;
 		rcvThr.Abort ();
 	}
-	
+
+	void responseBasedOnUdpMode(ref byte[] data, ref UdpClient client, ref IPEndPoint anyIP) {
+		string text = Encoding.ASCII.GetString(data);
+		lastRcvd = text;
+
+		if (lastRcvd.Length > 0) {
+			Thread.Sleep(delay_msec);
+			client.Send(data, data.Length, anyIP); // echo
+		}
+	}
+
 	private void FuncRcvData()
 	{
 		client = new UdpClient (port);
@@ -107,13 +117,16 @@ public class udpEmu : MonoBehaviour {
 			try {
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
 				byte[] data = client.Receive(ref anyIP);
-				string text = Encoding.ASCII.GetString(data);
-				lastRcvd = text;
 
-				if (lastRcvd.Length > 0) {
-					Thread.Sleep(delay_msec);
-					client.Send(data, data.Length, anyIP); // echo
-				}
+				responseBasedOnUdpMode(ref data, ref client, ref anyIP);
+
+//				string text = Encoding.ASCII.GetString(data);
+//				lastRcvd = text;
+
+//				if (lastRcvd.Length > 0) {
+//					Thread.Sleep(delay_msec);
+//					client.Send(data, data.Length, anyIP); // echo
+//				}
 			}
 			catch (Exception err)
 			{
