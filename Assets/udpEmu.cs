@@ -9,8 +9,9 @@ using System.Net.Sockets;
 using System.Threading;
 using NS_MyNetUtil; // for MyNetUtil.getMyIPAddress()
 
-/*
- * 
+/* 
+ * v0.5 2015/09/19
+ *   
  * ----------- UdpEchoServer ==> udpEmu ------------
  * v0.4 2015/08/30
  *   - separate IP address get method to MyNetUtil.cs
@@ -32,8 +33,8 @@ public class udpEmu : MonoBehaviour {
 	UdpClient client;
 	public int port = 6000;
 
-	public const string kAppName = "UDPEcho";
-	public const string kVersion = "v0.4";
+	public const string kAppName = "udpEmu";
+	public const string kVersion = "v0.5";
 
 	public string lastRcvd;
 
@@ -44,6 +45,12 @@ public class udpEmu : MonoBehaviour {
 
 	private bool stopThr = false;
 	private int delay_msec = 0;
+
+	private enum udpMode {
+		ECHO = 0,
+		REGISTER, // register responsed dictionary
+	}
+	private udpMode myUdpMode = udpMode.ECHO;
 
 	int getDelay() { 
 		string txt = delayIF.text;
