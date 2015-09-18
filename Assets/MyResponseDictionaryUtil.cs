@@ -10,8 +10,9 @@ using System.Collections.Generic; // for Dictionary / List
  * v0.1 2015/09/19
  *   - Add()
  *   - Init()
- *   - DisplayAllElementWithKey()
+ *   - DisplayElements()
  *   - FindRandomly()
+ *   - Clear()
  */
 
 namespace NS_MyResponseDictionaryUtil
@@ -39,6 +40,13 @@ namespace NS_MyResponseDictionaryUtil
 			if (myDic == null) {
 				myDic = new Dictionary<string, List<string>> ();
 			}
+		}
+
+		public static void Clear() {
+			if (myDic == null) {
+				return;
+			}
+			myDic.Clear ();
 		}
 
 		public static void Add(string commandStr, string responseStr) {
@@ -105,6 +113,7 @@ namespace NS_MyResponseDictionaryUtil
 			Add ("time", "2015/09/18 06:25");
 			Add ("time", "2015/09/18 06:30");
 
+//			Clear ();
 			DisplayElements ("hello");
 
 			bool isOk;
@@ -115,6 +124,8 @@ namespace NS_MyResponseDictionaryUtil
 				isOk = FindRandomly(keyStr, out resStr);
 				if (isOk) {
 					Debug.Log(keyStr + " >> " + resStr);
+				} else {
+					Debug.Log(keyStr + " : response not found");
 				}
 			}
 		}
