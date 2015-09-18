@@ -14,9 +14,9 @@ using System.Collections.Generic; // for Dictionary / List
  *   - FindRandomly()
  */
 
-namespace NS_MyCommandEmuUtil
+namespace NS_MyResponseDictionaryUtil
 {
-	public static class MyCommandEmuUtil {
+	public static class MyResponseDictionaryUtil {
 		static Dictionary <string, List<string>> myDic = null;
 
 		// ------ private ------

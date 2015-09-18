@@ -46,8 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\MyCommandEmuUtil.cs" />
      <Compile Include="Assets\MyNetUtil.cs" />
+     <Compile Include="Assets\MyResponseDictionaryUtil.cs" />
      <Compile Include="Assets\QuitButtonScript.cs" />
      <Compile Include="Assets\ScreenSizeKeeper.cs" />
      <Compile Include="Assets\test_commandEmuUtil.cs" />

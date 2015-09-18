@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-using NS_MyCommandEmuUtil;
+using NS_MyResponseDictionaryUtil;
 
 public class test_commandEmuUtil : MonoBehaviour {
 
 	void Start () {
-		MyCommandEmuUtil.Test_main ();
+		MyResponseDictionaryUtil.Test_main ();
 	
 	}
 	
