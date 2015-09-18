@@ -57,7 +57,9 @@ namespace NS_MyCommandEmuUtil
 			myDic.Add(commandStr, responseList);
 		}
 
-		public static void DisplayAllElementWithKey(string searchKey) {
+		public static void DisplayAllElements_oldver(string searchKey) {
+			// inefficient 
+			// better to use DisplayAllElements()
 			foreach(KeyValuePair<string, List<string>> pair in myDic) {
 				if (pair.Key != searchKey) {
 					continue;
@@ -66,6 +68,18 @@ namespace NS_MyCommandEmuUtil
 				foreach(var element in pair.Value) {
 					Debug.Log("res:" + element);
 				}
+			}
+		}
+
+		public static void DisplayAllElements(string searchKey) {
+			if (hasKey (searchKey) == false) {
+				return; // fail
+			}
+			List<string> resList;
+			resList = myDic [searchKey];
+			Debug.Log ("cmd:" + searchKey);
+			foreach (var element in resList) {
+				Debug.Log("res:" + element);
 			}
 		}
 
@@ -90,7 +104,9 @@ namespace NS_MyCommandEmuUtil
 			Add ("time", "2015/09/18 06:20");
 			Add ("time", "2015/09/18 06:25");
 			Add ("time", "2015/09/18 06:30");
-//			DisplayAllElementWithKey ("hello");
+
+			DisplayAllElements ("hello");
+			return;
 
 			bool isOk;
 			string keyStr, resStr;
