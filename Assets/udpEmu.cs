@@ -81,7 +81,7 @@ public class udpEmu : MonoBehaviour {
 	}
 	
 	void startTread() {
-		Debug.Log ("init");
+		Debug.Log ("init udpEmu thread");
 		rcvThr = new Thread( new ThreadStart(FuncRcvData));
 		rcvThr.Start ();
 	}

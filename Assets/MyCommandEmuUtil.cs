@@ -2,6 +2,18 @@
 using System.Collections;
 using System.Collections.Generic; // for Dictionary / List
 
+// TODO: AllClear()
+// TODO: Remove()
+// TODO: keep maximum response count for each command
+
+/*
+ * v0.1 2015/09/19
+ *   - Add()
+ *   - Init()
+ *   - DisplayAllElementWithKey()
+ *   - FindRandomly()
+ */
+
 namespace NS_MyCommandEmuUtil
 {
 	public static class MyCommandEmuUtil {
@@ -81,8 +93,7 @@ namespace NS_MyCommandEmuUtil
 //			DisplayAllElementWithKey ("hello");
 
 			bool isOk;
-			string resStr;
-			string keyStr;
+			string keyStr, resStr;
 
 			keyStr = "time";
 			for (int loop=0; loop<10; loop++) {
