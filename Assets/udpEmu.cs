@@ -98,13 +98,32 @@ public class udpEmu : MonoBehaviour {
 		rcvThr.Abort ();
 	}
 
-	void responseBasedOnUdpMode(ref byte[] data, ref UdpClient client, ref IPEndPoint anyIP) {
-		string text = Encoding.ASCII.GetString(data);
-		lastRcvd = text;
+	const string kVer0p1Hash = "dfae271";
+	bool isRegisterStartCommand(string rcvd) {
+		return rcvd.Contains ("register,start," + kVer0p1Hash);
+	}
+	bool isRegisterStopCommand(string rcvd) {
+		return rcvd.Contains ("register,exit," + kVer0p1Hash);
+	}
 
-		if (lastRcvd.Length > 0) {
-			Thread.Sleep(delay_msec);
-			client.Send(data, data.Length, anyIP); // echo
+	void responseBasedOnUdpMode(ref byte[] data, ref UdpClient client, ref IPEndPoint anyIP) {
+		string rcvd = Encoding.ASCII.GetString(data);
+		lastRcvd = rcvd;
+		string sendmsg; 
+
+		if (myUdpMode.Equals (udpMode.ECHO)) {
+			if (isRegisterStartCommand(lastRcvd)) {
+				// TODO : tx start message
+				sendmsg = "start register mode";
+				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
+				return;
+			}
+			if (lastRcvd.Length > 0) {
+				Thread.Sleep (delay_msec);
+				client.Send (data, data.Length, anyIP); // echo
+			}
+		} else if (myUdpMode.Equals (udpMode.REGISTER)) {
+			// TODO: tx dummy strings
 		}
 	}
 
@@ -119,14 +138,6 @@ public class udpEmu : MonoBehaviour {
 				byte[] data = client.Receive(ref anyIP);
 
 				responseBasedOnUdpMode(ref data, ref client, ref anyIP);
-
-//				string text = Encoding.ASCII.GetString(data);
-//				lastRcvd = text;
-
-//				if (lastRcvd.Length > 0) {
-//					Thread.Sleep(delay_msec);
-//					client.Send(data, data.Length, anyIP); // echo
-//				}
 			}
 			catch (Exception err)
 			{
