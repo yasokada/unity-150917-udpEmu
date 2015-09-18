@@ -113,17 +113,21 @@ public class udpEmu : MonoBehaviour {
 
 		if (myUdpMode.Equals (udpMode.ECHO)) {
 			if (isRegisterStartCommand(lastRcvd)) {
-				// TODO : tx start message
-				sendmsg = "start register mode";
+				myUdpMode = udpMode.REGISTER;
+				sendmsg = "start register mode" + System.Environment.NewLine;
 				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
+				client.Send (data, data.Length, anyIP); // echo
 				return;
 			}
+			// echo
 			if (lastRcvd.Length > 0) {
 				Thread.Sleep (delay_msec);
 				client.Send (data, data.Length, anyIP); // echo
 			}
 		} else if (myUdpMode.Equals (udpMode.REGISTER)) {
-			// TODO: tx dummy strings
+			sendmsg = "in register mode" + System.Environment.NewLine;
+			data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
+			client.Send (data, data.Length, anyIP); // echo
 		}
 	}
 
