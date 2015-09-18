@@ -59,7 +59,7 @@ namespace NS_MyCommandEmuUtil
 
 		public static void DisplayAllElements_oldver(string searchKey) {
 			// inefficient 
-			// better to use DisplayAllElements()
+			// better to use DisplayElements()
 			foreach(KeyValuePair<string, List<string>> pair in myDic) {
 				if (pair.Key != searchKey) {
 					continue;
@@ -71,7 +71,7 @@ namespace NS_MyCommandEmuUtil
 			}
 		}
 
-		public static void DisplayAllElements(string searchKey) {
+		public static void DisplayElements(string searchKey) {
 			if (hasKey (searchKey) == false) {
 				return; // fail
 			}
@@ -105,8 +105,7 @@ namespace NS_MyCommandEmuUtil
 			Add ("time", "2015/09/18 06:25");
 			Add ("time", "2015/09/18 06:30");
 
-			DisplayAllElements ("hello");
-			return;
+			DisplayElements ("hello");
 
 			bool isOk;
 			string keyStr, resStr;
