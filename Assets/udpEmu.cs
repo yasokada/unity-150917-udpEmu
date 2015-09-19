@@ -179,7 +179,7 @@ public class udpEmu : MonoBehaviour {
 		if (myUdpMode.Equals (udpMode.EMULATOR)) {
 			if (isRegisterStartCommand(lastRcvd)) {
 				myUdpMode = udpMode.REGISTER;
-				sendmsg = "echo >> register mode" + System.Environment.NewLine;
+				sendmsg = "emulator >> register mode" + System.Environment.NewLine;
 				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
 				client.Send (data, data.Length, anyIP); // ebcho
 				return;
@@ -199,14 +199,14 @@ public class udpEmu : MonoBehaviour {
 		} else if (myUdpMode.Equals (udpMode.REGISTER)) {
 			if (isRegisterExitCommand(lastRcvd)) {
 				myUdpMode = udpMode.EMULATOR;
-				sendmsg = "register >> echo mode" + System.Environment.NewLine;
+				sendmsg = "register >> emulator mode" + System.Environment.NewLine;
 				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
 				client.Send (data, data.Length, anyIP); // echo
 				return;
 			}
 			bool res = registerResponseDictionary(rcvd);
 			if (res == false) {
-				sendmsg = "invalid string:" + rcvd;
+				sendmsg = "not registered :" + rcvd;
 				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
 				client.Send (data, data.Length, anyIP); // echo
 			}

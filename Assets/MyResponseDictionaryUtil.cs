@@ -46,7 +46,7 @@ namespace NS_MyResponseDictionaryUtil
 			return TotalMsec;
 		}
 
-		private static int fakeRandome(int maxval) {
+		private static int fakeRandom(int maxval) {
 			long msec = get_msec ();
 			return (int)(msec % (maxval+1));
 		}
@@ -112,7 +112,7 @@ namespace NS_MyResponseDictionaryUtil
 			resList = myDic [searchKey];
 			int pos;
 //			pos = UnityEngine.Random.Range (0, resList.Count); // cannot be used except for Start() / Update()
-			pos = fakeRandome (resList.Count - 1); 
+			pos = fakeRandom (resList.Count - 1); 
 			resStr = resList [pos];
 			return true;
 		}
