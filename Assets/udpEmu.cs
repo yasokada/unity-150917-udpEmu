@@ -124,6 +124,12 @@ public class udpEmu : MonoBehaviour {
 
 	private string strCommand, strResponse; // to register command-response
 
+	string getSetString(string src, string str2nd) {
+		int idx = src.IndexOf (str2nd); // ??? > char or string parameter
+		idx += (str2nd + ",").Length; // skip "tx," "rx,"
+		return src.Substring (idx);
+	}
+
 	bool registerResponseDictionary(string rcvd)
 	{
 		// 1. check 2nd column (tx | rx)
@@ -133,14 +139,12 @@ public class udpEmu : MonoBehaviour {
 			return false;
 		}
 
-		// 2. get set string (column 2nd and after)
-		int idx = rcvd.IndexOf (str2nd); // ??? > char or string parameter
-		idx += (str2nd + ",").Length; // skip "tx," "rx,"
-		string setstr = rcvd.Substring (idx);
+		string setstr = getSetString (rcvd, str2nd); // rcvd.Substring (idx);
+
 //		Debug.Log ("register:" + setstr);
+
 		if (str2nd.Equals ("tx")) {
 			strCommand = setstr;
-			strResponse = ""; // clear response
 		}
 		if (str2nd.Equals ("rx")) {
 			strResponse = setstr;
