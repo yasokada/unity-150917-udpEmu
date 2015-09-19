@@ -100,16 +100,29 @@ public class udpEmu : MonoBehaviour {
 
 	const string kVer0p1Hash = "dfae271";
 	bool isRegisterStartCommand(string rcvd) {
-		return rcvd.Contains ("register,start," + kVer0p1Hash);
+//		return rcvd.Contains ("register,start," + kVer0p1Hash);
+		return rcvd.Contains ("SOT," + kVer0p1Hash);
 	}
-	bool isRegisterStopCommand(string rcvd) {
-		return rcvd.Contains ("register,exit," + kVer0p1Hash);
+	bool isRegisterExitCommand(string rcvd) {
+//		return rcvd.Contains ("register,exit," + kVer0p1Hash);
+		return rcvd.Contains ("EOT," + kVer0p1Hash);
+	}
+
+	bool registerResponseDictionary(string rcvd)
+	{
+		// TODO: register, tx and rx strings
+
+		return true;
 	}
 
 	void responseBasedOnUdpMode(ref byte[] data, ref UdpClient client, ref IPEndPoint anyIP) {
 		string rcvd = Encoding.ASCII.GetString(data);
 		lastRcvd = rcvd;
 		string sendmsg; 
+
+		if (lastRcvd.Length == 0) {
+			return;
+		}
 
 		if (myUdpMode.Equals (udpMode.ECHO)) {
 			if (isRegisterStartCommand(lastRcvd)) {
@@ -120,14 +133,20 @@ public class udpEmu : MonoBehaviour {
 				return;
 			}
 			// echo
-			if (lastRcvd.Length > 0) {
-				Thread.Sleep (delay_msec);
-				client.Send (data, data.Length, anyIP); // echo
-			}
+			Thread.Sleep (delay_msec);
+			client.Send (data, data.Length, anyIP);
 		} else if (myUdpMode.Equals (udpMode.REGISTER)) {
-			sendmsg = "in register mode" + System.Environment.NewLine;
-			data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
-			client.Send (data, data.Length, anyIP); // echo
+			if (isRegisterExitCommand(lastRcvd)) {
+				myUdpMode = udpMode.ECHO;
+				sendmsg = "exit register mode" + System.Environment.NewLine;
+				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
+				client.Send (data, data.Length, anyIP); // echo
+				return;
+			}
+			registerResponseDictionary(rcvd);
+
+//			data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
+//			client.Send (data, data.Length, anyIP); // echo
 		}
 	}
 
