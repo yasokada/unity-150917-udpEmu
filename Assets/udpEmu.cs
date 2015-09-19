@@ -108,9 +108,35 @@ public class udpEmu : MonoBehaviour {
 		return rcvd.Contains ("EOT," + kVer0p1Hash);
 	}
 
+	string extractCsvRow_returnWithoutCRLF(string src, int idx)
+	{
+		// TODO: refactor
+		string[] splitted = src.Split(new string[] { System.Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+		string res = "";
+		foreach(string each in splitted) {
+			string [] elements = each.Split(',');
+			res = res + elements[idx]; //  + System.Environment.NewLine;
+		}
+		return res;
+	}
+
 	bool registerResponseDictionary(string rcvd)
 	{
 		// TODO: register, tx and rx strings
+
+		// 1. check 2nd column (tx | rx)
+		string str2nd = extractCsvRow_returnWithoutCRLF (rcvd, /* idx=*/1);
+		if (str2nd.Equals ("tx") == false && str2nd.Equals ("rx") == false) {
+			Debug.Log("not for registration");
+			return false;
+		}
+
+		int idx = rcvd.IndexOf ("tx"); // ??? > char or string parameter
+		idx += ("tx,").Length;
+		string tes = rcvd.Substring (idx);
+		Debug.Log ("register:" + tes);
+		// TODO: keep tx, rx set
+		// TODO: register
 
 		return true;
 	}
