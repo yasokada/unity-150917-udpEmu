@@ -10,7 +10,7 @@ using System.Collections.Generic; // for Dictionary / List
  * v0.1 2015/09/19
  *   - Add()
  *   - Init()
- *   - DisplayElements()
+ *   - DisplayElementsWithKey()
  *   - FindRandomly()
  *   - Clear()
  */
@@ -65,13 +65,8 @@ namespace NS_MyResponseDictionaryUtil
 			myDic.Add(commandStr, responseList);
 		}
 
-		public static void DisplayAllElements_oldver(string searchKey) {
-			// inefficient 
-			// better to use DisplayElements()
+		public static void Debug_DisplayAllElements() {
 			foreach(KeyValuePair<string, List<string>> pair in myDic) {
-				if (pair.Key != searchKey) {
-					continue;
-				}
 				Debug.Log("cmd:" + pair.Key.ToString());
 				foreach(var element in pair.Value) {
 					Debug.Log("res:" + element);
@@ -79,7 +74,7 @@ namespace NS_MyResponseDictionaryUtil
 			}
 		}
 
-		public static void DisplayElements(string searchKey) {
+		public static void DisplayElementsWithKey(string searchKey) {
 			if (hasKey (searchKey) == false) {
 				return; // fail
 			}
@@ -114,7 +109,7 @@ namespace NS_MyResponseDictionaryUtil
 			Add ("time", "2015/09/18 06:30");
 
 //			Clear ();
-			DisplayElements ("hello");
+			DisplayElementsWithKey ("hello");
 
 			bool isOk;
 			string keyStr, resStr;

@@ -7,7 +7,9 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+
 using NS_MyNetUtil; // for MyNetUtil.getMyIPAddress()
+using NS_MyResponseDictionaryUtil; // for register command-response dictionary
 
 /* 
  * v0.5 2015/09/19
@@ -120,10 +122,10 @@ public class udpEmu : MonoBehaviour {
 		return res;
 	}
 
+	private string strCommand, strResponse; // to register command-response
+
 	bool registerResponseDictionary(string rcvd)
 	{
-		// TODO: register, tx and rx strings
-
 		// 1. check 2nd column (tx | rx)
 		string str2nd = extractCsvRow_returnWithoutCRLF (rcvd, /* idx=*/1);
 		if (str2nd.Equals ("tx") == false && str2nd.Equals ("rx") == false) {
@@ -131,14 +133,27 @@ public class udpEmu : MonoBehaviour {
 			return false;
 		}
 
-		int idx = rcvd.IndexOf ("tx"); // ??? > char or string parameter
-		idx += ("tx,").Length;
-		string tes = rcvd.Substring (idx);
-		Debug.Log ("register:" + tes);
-		// TODO: keep tx, rx set
-		// TODO: register
+		// 2. get set string (column 2nd and after)
+		int idx = rcvd.IndexOf (str2nd); // ??? > char or string parameter
+		idx += (str2nd + ",").Length; // skip "tx," "rx,"
+		string setstr = rcvd.Substring (idx);
+//		Debug.Log ("register:" + setstr);
+		if (str2nd.Equals ("tx")) {
+			strCommand = setstr;
+			strResponse = ""; // clear response
+		}
+		if (str2nd.Equals ("rx")) {
+			strResponse = setstr;
+			if (strCommand.Length > 0) {
+				MyResponseDictionaryUtil.Add(strCommand, strResponse);
 
-		return true;
+				MyResponseDictionaryUtil.Debug_DisplayAllElements(); // TODO: remove // for debug
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	void responseBasedOnUdpMode(ref byte[] data, ref UdpClient client, ref IPEndPoint anyIP) {
@@ -178,6 +193,8 @@ public class udpEmu : MonoBehaviour {
 
 	private void FuncRcvData()
 	{
+		MyResponseDictionaryUtil.Init ();
+
 		client = new UdpClient (port);
 		client.Client.ReceiveTimeout = 300; // msec
 		client.Client.Blocking = false;
