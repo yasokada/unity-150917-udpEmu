@@ -122,7 +122,6 @@ public class udpEmu : MonoBehaviour {
 		return res;
 	}
 
-	private string strCommand, strResponse; // to register command-response
 
 	string getSetString(string src, string str2nd) {
 		int idx = src.IndexOf (str2nd); // ??? > char or string parameter
@@ -130,29 +129,35 @@ public class udpEmu : MonoBehaviour {
 		return src.Substring (idx);
 	}
 
+	const string kCommandStr = "tx";
+	const string kResponseStr = "rx";
+	private string strCommand, strResponse; // to register command-response
+
 	bool registerResponseDictionary(string rcvd)
 	{
 		// 1. check 2nd column (tx | rx)
 		string str2nd = extractCsvRow_returnWithoutCRLF (rcvd, /* idx=*/1);
-		if (str2nd.Equals ("tx") == false && str2nd.Equals ("rx") == false) {
+		if (str2nd.Equals (kCommandStr) == false 
+		    && str2nd.Equals (kResponseStr) == false) {
 			Debug.Log("not for registration");
 			return false;
 		}
 
-		string setstr = getSetString (rcvd, str2nd); // rcvd.Substring (idx);
-
 //		Debug.Log ("register:" + setstr);
 
-		if (str2nd.Equals ("tx")) {
+		// 2. keep command string
+		if (str2nd.Equals (kCommandStr)) {
+			string setstr = getSetString (rcvd, str2nd); // rcvd.Substring (idx);
 			strCommand = setstr;
+			return false; // or true?
 		}
-		if (str2nd.Equals ("rx")) {
+		// 3. register command-response
+		if (str2nd.Equals (kResponseStr)) {
+			string setstr = getSetString (rcvd, str2nd); // rcvd.Substring (idx);
 			strResponse = setstr;
 			if (strCommand.Length > 0) {
 				MyResponseDictionaryUtil.Add(strCommand, strResponse);
-
 				MyResponseDictionaryUtil.Debug_DisplayAllElements(); // TODO: remove // for debug
-
 				return true;
 			}
 		}
