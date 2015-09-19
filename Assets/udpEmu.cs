@@ -13,7 +13,7 @@ using NS_MyResponseDictionaryUtil; // for register command-response dictionary
 
 /* 
  * v0.5 2015/09/19
- *   
+ *   - can register command-response dictionary for emulation
  * ----------- UdpEchoServer ==> udpEmu ------------
  * v0.4 2015/08/30
  *   - separate IP address get method to MyNetUtil.cs
@@ -100,14 +100,14 @@ public class udpEmu : MonoBehaviour {
 		rcvThr.Abort ();
 	}
 
-	const string kVer0p1Hash = "dfae271";
+	const string kVer0p1Hash = "dfae271"; // hash of v0.1 of udpEmu
 	bool isRegisterStartCommand(string rcvd) {
 //		return rcvd.Contains ("register,start," + kVer0p1Hash);
-		return rcvd.Contains ("SOT," + kVer0p1Hash);
+		return rcvd.Contains ("SOT," + kVer0p1Hash); // to be compatible with udpMonitor
 	}
 	bool isRegisterExitCommand(string rcvd) {
 //		return rcvd.Contains ("register,exit," + kVer0p1Hash);
-		return rcvd.Contains ("EOT," + kVer0p1Hash);
+		return rcvd.Contains ("EOT," + kVer0p1Hash); // to be compatible with udpMonitor
 	}
 
 	string extractCsvRow_returnWithoutCRLF(string src, int idx)
@@ -129,7 +129,7 @@ public class udpEmu : MonoBehaviour {
 		return src.Substring (idx);
 	}
 
-	const string kCommandStr = "tx";
+	const string kCommandStr  = "tx";
 	const string kResponseStr = "rx";
 	private string strCommand, strResponse; // to register command-response
 
@@ -149,7 +149,7 @@ public class udpEmu : MonoBehaviour {
 		if (str2nd.Equals (kCommandStr)) {
 			string setstr = getSetString (rcvd, str2nd); // rcvd.Substring (idx);
 			strCommand = setstr;
-			return false; // or true?
+			return true; // or true?
 		}
 		// 3. register command-response
 		if (str2nd.Equals (kResponseStr)) {
@@ -193,10 +193,12 @@ public class udpEmu : MonoBehaviour {
 				client.Send (data, data.Length, anyIP); // echo
 				return;
 			}
-			registerResponseDictionary(rcvd);
-
-//			data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
-//			client.Send (data, data.Length, anyIP); // echo
+			bool res = registerResponseDictionary(rcvd);
+			if (res == false) {
+				sendmsg = "invalid string:" + rcvd;
+				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
+				client.Send (data, data.Length, anyIP); // echo
+			}
 		}
 	}
 
