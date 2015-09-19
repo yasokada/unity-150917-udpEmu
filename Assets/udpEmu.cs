@@ -49,10 +49,10 @@ public class udpEmu : MonoBehaviour {
 	private int delay_msec = 0;
 
 	private enum udpMode {
-		ECHO = 0,
+		EMULATOR = 0, // emulator using the dictionary
 		REGISTER, // register responsed dictionary
 	}
-	private udpMode myUdpMode = udpMode.ECHO;
+	private udpMode myUdpMode = udpMode.EMULATOR;
 
 	int getDelay() { 
 		string txt = delayIF.text;
@@ -100,6 +100,7 @@ public class udpEmu : MonoBehaviour {
 		rcvThr.Abort ();
 	}
 
+	// { -------------- command check
 	const string kVer0p1Hash = "dfae271"; // hash of v0.1 of udpEmu
 	bool isRegisterStartCommand(string rcvd) {
 //		return rcvd.Contains ("register,start," + kVer0p1Hash);
@@ -109,6 +110,7 @@ public class udpEmu : MonoBehaviour {
 //		return rcvd.Contains ("register,exit," + kVer0p1Hash);
 		return rcvd.Contains ("EOT," + kVer0p1Hash); // to be compatible with udpMonitor
 	}
+	// } -------------- command check
 
 	string extractCsvRow_returnWithoutCRLF(string src, int idx)
 	{
@@ -174,21 +176,30 @@ public class udpEmu : MonoBehaviour {
 			return;
 		}
 
-		if (myUdpMode.Equals (udpMode.ECHO)) {
+		if (myUdpMode.Equals (udpMode.EMULATOR)) {
 			if (isRegisterStartCommand(lastRcvd)) {
 				myUdpMode = udpMode.REGISTER;
-				sendmsg = "start register mode" + System.Environment.NewLine;
+				sendmsg = "echo >> register mode" + System.Environment.NewLine;
 				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
-				client.Send (data, data.Length, anyIP); // echo
+				client.Send (data, data.Length, anyIP); // ebcho
 				return;
 			}
-			// echo
+
 			Thread.Sleep (delay_msec);
-			client.Send (data, data.Length, anyIP);
+
+			// from dictionary
+			bool isOk = MyResponseDictionaryUtil.FindRandomly(rcvd, out sendmsg);
+			if (isOk) {
+				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
+				client.Send (data, data.Length, anyIP);
+				return;
+			} else {
+				// no response
+			}
 		} else if (myUdpMode.Equals (udpMode.REGISTER)) {
 			if (isRegisterExitCommand(lastRcvd)) {
-				myUdpMode = udpMode.ECHO;
-				sendmsg = "exit register mode" + System.Environment.NewLine;
+				myUdpMode = udpMode.EMULATOR;
+				sendmsg = "register >> echo mode" + System.Environment.NewLine;
 				data = System.Text.Encoding.ASCII.GetBytes(sendmsg);
 				client.Send (data, data.Length, anyIP); // echo
 				return;

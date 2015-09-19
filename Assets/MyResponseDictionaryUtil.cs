@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic; // for Dictionary / List
 
+using System; // for DateTime
+
 // TODO: AllClear()
 // TODO: Remove()
 // TODO: keep maximum response count for each command
@@ -13,6 +15,7 @@ using System.Collections.Generic; // for Dictionary / List
  *   - DisplayElementsWithKey()
  *   - FindRandomly()
  *   - Clear()
+ *   - fakeRandome()
  */
 
 namespace NS_MyResponseDictionaryUtil
@@ -34,6 +37,20 @@ namespace NS_MyResponseDictionaryUtil
 			}
 			return (resList.Count > 0);
 		}
+
+		private static long get_msec() {
+			System.DateTime now = System.DateTime.Now;
+			System.DateTime nowMsec0 = new DateTime (now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+			long TotalMsec = (long)((DateTime.Now - nowMsec0).TotalMilliseconds);
+			
+			return TotalMsec;
+		}
+
+		private static int fakeRandome(int maxval) {
+			long msec = get_msec ();
+			return (int)(msec % (maxval+1));
+		}
+
 		// ------ public ------
 
 		public static void Init() {
@@ -93,7 +110,9 @@ namespace NS_MyResponseDictionaryUtil
 			}
 			List<string> resList;
 			resList = myDic [searchKey];
-			int pos = Random.Range (0, resList.Count);
+			int pos;
+//			pos = UnityEngine.Random.Range (0, resList.Count); // cannot be used except for Start() / Update()
+			pos = fakeRandome (resList.Count - 1); 
 			resStr = resList [pos];
 			return true;
 		}
